@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>中原問卷系統</title>
+</head>
+
+<body>
+
+<div id="app">
+    <v-app id="inspire">
+        <v-content>
+            <v-container fluid fill-height>
+                <v-layout align-center justify-center>
+                    <v-flex xs12 sm8 md4>
+                        <v-card class="elevation-20">
+                            <v-toolbar dark color="primary">
+                                <v-toolbar-title>{{ loginmsg }}</v-toolbar-title>
+                            </v-toolbar>
+                            <v-card-text>
+                                <v-form>
+                                    <v-text-field prepend-icon="person"
+                                                  name="login"
+                                                  label="帳號"
+                                                  type="text">
+                                    </v-text-field>
+                                    <v-text-field prepend-icon="lock"
+                                                  name="password"
+                                                  label="密碼"
+                                                  id="password"
+                                                  type="password">
+                                    </v-text-field>
+                                    <v-select
+                                                :items="items"
+                                                v-model="loginmsg"
+                                                label="請選擇登入身分"
+                                                single-line
+                                    ></v-select>
+                                </v-form>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <div v-if="loginmsg === '學生登入'">
+                                    <v-btn color="primary" href="StudentQuestion.html">登入</v-btn>
+                                </div>
+                                <div v-else-if="loginmsg === '助理登入'">
+                                    <v-btn color="primary" href="dashboard.html">登入</v-btn>
+                                </div>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-content>
+    </v-app>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: () => ({
+            loginmsg: "登入",
+            items: [
+                '學生登入',
+                '助理登入',
+            ],
+        })
+    })
+</script>
+
+</body>
+</html>

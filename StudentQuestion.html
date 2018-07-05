@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>學生問卷</title>
+</head>
+<body>
+<div id="app">
+    <v-app id="inspire">
+
+        <v-toolbar color="indigo" dark fixed app>
+            <v-toolbar-title>學生問卷填寫</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="LogOut">
+                <v-icon>exit_to_app</v-icon>
+            </v-btn>
+        </v-toolbar>
+        <v-content>
+            <v-container align-center>
+                <v-data-table
+                        :headers="headers"
+                        :items="AllQuestionFrom"
+                        hide-actions
+                        class="elevation-20"
+                >
+                    <template slot="items" slot-scope="props">
+                        <td class="text-xs-center">{{ props.item.ClassName }}</td>
+                        <td class="text-xs-center">{{ props.item.TeacherName }}</td>
+                        <td class="text-xs-center" v-if="props.item.finish">
+                            <v-btn color="success">完成</v-btn>
+                        </td>
+                        <td class="text-xs-center" v-else>
+                            <v-btn color="info" href="from.html">填寫</v-btn>
+                        </td>
+                    </template>
+
+                </v-data-table>
+            </v-container>
+        </v-content>
+        <v-footer color="indigo" app inset>
+            <span class="white--text">&copy; QuestionSystem</span>
+        </v-footer>
+    </v-app>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.common.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: () => ({
+            headers: [
+                {
+                    text: '課程名稱',
+                    align: 'center',
+                    sortable: false,
+                    value: 'ClassName'
+                },
+                {
+                    text: '老師名稱',
+                    sortable: false,
+                    align: 'center',
+                    value: 'TeacherName',
+                },
+                {
+                    text: '完成',
+                    sortable: false,
+                    align: 'center',
+                    value: 'finish',
+                },
+            ],
+            AllQuestionFrom: [
+                {
+                    value: false,
+                    ClassName: '進階計算機網路',
+                    TeacherName: '楊明豪',
+                    finish: true,
+
+                },
+                {
+                    value: false,
+                    ClassName: '程式語言',
+                    TeacherName: '夏延德',
+                    finish: false,
+                },
+                {
+                    value: false,
+                    ClassName: '機器學習',
+                    TeacherName: '蘇志文',
+                    finish: true,
+                },
+                {
+                    value: false,
+                    ClassName: '演算法分析',
+                    TeacherName: '張元翔',
+                    finish: false,
+                },
+                {
+                    value: false,
+                    ClassName: '計算機組織',
+                    TeacherName: '朱守禮',
+                    finish: true,
+                }
+            ]
+        }),
+        methods: {
+            LogOut: () => {
+                alert('LogOut!');
+                history.back();
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

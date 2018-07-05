@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>助理控制台</title>
+</head>
+<body>
+<div id="app">
+    <v-app id="inspire">
+        <v-navigation-drawer
+                fixed
+                v-model="drawer"
+                app
+        >
+            <v-list dense>
+                <v-list-tile @click="ImportStudentAndClass">
+                    <v-list-tile-action>
+                        <v-icon>book</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>匯入學生與課程</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile @click="QuestionManagement">
+                    <v-list-tile-action>
+                        <v-icon>assignment</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>問卷管理</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile @click="AccountManagement">
+                    <v-list-tile-action>
+                        <v-icon>assignment_ind</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>帳號管理</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile @click="AnonymousResult">
+                    <v-list-tile-action>
+                        <v-icon>list</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>觀看匿名結果</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile @click="Statistics">
+                    <v-list-tile-action>
+                        <v-icon>assessment</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>詳細統計資料</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+        <v-toolbar color="indigo" dark fixed app>
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar-title>問卷系統控制台</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="LogOut" >
+                <v-icon>exit_to_app</v-icon>
+            </v-btn>
+        </v-toolbar>
+        <v-content>
+            <v-container d-flex >
+
+            </v-container>
+        </v-content>
+        <v-footer color="indigo" app inset>
+            <span class="white--text">&copy; QuestionSystem</span>
+        </v-footer>
+    </v-app>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.common.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: () => ({
+            drawer: null,
+        }),
+        methods: {
+            LogOut: () => {
+                alert('LogOut!') ;
+                history.back() ;
+            },
+            ImportStudentAndClass: () => {
+                window.open('ImportStudentAndClass.html')
+            },
+            QuestionManagement: () => {
+                window.open('QuestionManagement.html')
+            },
+            AccountManagement: () => {
+                window.open('AccountManagement.html')
+            },
+            AnonymousResult: () => {
+                window.open('AnonymousResult.html')
+            },
+            Statistics: () => {
+                window.open('Statistics.html')
+            }
+
+
+        }
+    })
+
+</script>
+<script>
+    var dom = document.getElementById("linechart");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'line'
+        }]
+    };
+    ;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>
+</body>
+</html>
