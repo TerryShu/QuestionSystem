@@ -1,10 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>問卷</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            word-wrap : break-word
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+    </style>
 </head>
 <body>
-<p>fromPage</p>
+<div id="app">
+    <v-app id="inspire">
+
+        <v-toolbar color="indigo" dark fixed app>
+            <v-toolbar-title>填寫問卷</v-toolbar-title>
+        </v-toolbar>
+        <v-content>
+            <v-container align-center>
+                <table>
+                    <tr>
+                        <th v-for="header in headers">{{ header }}</th>
+                    </tr>
+                    <tr v-for="Question in AllQuestions" >
+                        <td width="250px" >{{ Question.question }}</td>
+                        <td v-for="n in 5" ><input type="radio"  :name="Question.questionID"></td>
+                        <td></td>
+                        <td v-for="n in 5" ><input type="radio"  :name="Question.recognitionID"></td>
+                    </tr>
+                    <tr>
+                        <td>我的其它意見：</td>
+                        <td colspan="11" >
+                            <v-textarea
+                                name="suggestion"
+                                label="給予老師或系統意見"
+                                value=""
+                                auto-grow
+                            >
+                            </v-textarea>
+                        </td>
+                    </tr>
+                </table>
+                <v-btn color="info" @click.stop="dialog = true" >送出</v-btn>
+                <v-dialog
+                        v-model="dialog"
+                        max-width="290"
+                >
+                    <v-card>
+                        <v-card-title class="headline">確認送出</v-card-title>
+
+                        <v-card-text>
+                            確定送出後，無法再更改問卷!
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn
+                                    color="green darken-1"
+                                    flat="flat"
+                                    @click="dialog = false"
+                            >
+                                再檢查一下
+                            </v-btn>
+
+                            <v-btn
+                                    color="green darken-1"
+                                    flat="flat"
+                                    @click="formsubmit"
+                            >
+                                送出
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-container>
+        </v-content>
+        <v-footer color="indigo" app inset>
+            <span class="white--text">&copy; QuestionSystem</span>
+        </v-footer>
+    </v-app>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.common.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: () => ({
+            dialog: false ,
+            radioOptions: [{ OptionValue : -2 , OptionName : '很不滿意' },
+                           { OptionValue : -1 , OptionName :'不滿意' },
+                           { OptionValue : 0 , OptionName :'普通' },
+                           { OptionValue : 1 , OptionName :'尚可' },
+                           { OptionValue : 2 , OptionName :'極好' } ] ,
+            radioOptions1: [ -2 , -1 , 0 , 1 , 2 ],
+            headers: [ '題目','很不滿意','不滿意','普通','滿意','極滿意',
+                       '認同度','很不認同','不認同','尚可','認同','極認同'
+                     ],
+            AllQuestions:[ { question : "我認為這個課程的學習目標具體且清晰" , questionID : "q1" , recognitionID : "r1" },
+                { question : "修習這個課程，我的先修課程背景預備充份" , questionID : "q2" , recognitionID : "r2"},
+                { question : "這是一門很難的課程" , questionID : "q3" , recognitionID : "r3"},
+                { question : "這是一門很難的課程" , questionID : "q4" , recognitionID : "r4"},
+                { question : "修習這個課程，使我能瞭解、應用數學、科學、及工程知識" , questionID : "q5" , recognitionID : "r5"} ]
+        }),
+        methods: {
+            formsubmit: () => {
+                dialog = false ;
+                history.back();
+            }
+        }
+    })
+
+</script>
 </body>
 </html>
