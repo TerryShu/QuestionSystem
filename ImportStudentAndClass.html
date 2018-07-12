@@ -15,7 +15,44 @@
             <v-toolbar-title>匯入學生與課程</v-toolbar-title>
         </v-toolbar>
         <v-content>
+            <v-container align-center>
+                <v-layout justify-center >
+                    <label for="file">匯入學生與課程</label>
+                    <input type="file" id="file" name="file" >
+                    <v-btn color="primary" @click="upload = true" >匯入</v-btn>
+                </v-layout>
+                <br>
 
+                <v-card v-if="upload">
+                    <v-card-title>
+                        匯入清單
+                        <v-spacer></v-spacer>
+                        <v-text-field
+                                v-model="search"
+                                append-icon="search"
+                                label="Search"
+                                single-line
+                                hide-details
+                        ></v-text-field>
+                    </v-card-title>
+                    <v-data-table
+                            :headers="headers"
+                            :items="StudenCoursetList"
+                            :search="search"
+                    >
+                        <template slot="items" slot-scope="props">
+                            <td class="text-xs-center">{{ props.item.OpenDepartment }}</td>
+                            <td class="text-xs-center">{{ props.item.CourseName }}</td>
+                            <td class="text-xs-center">{{ props.item.TeacherName }}</td>
+                            <td class="text-xs-center">{{ props.item.StudentID }}</td>
+                            <td class="text-xs-center">{{ props.item.StudentName }}</td>
+                        </template>
+                        <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                            Your search for "{{ search }}" found no results.
+                        </v-alert>
+                    </v-data-table>
+                </v-card>
+            </v-container>
         </v-content>
         <v-footer color="indigo" app inset>
             <span class="white--text">&copy; QuestionSystem</span>
@@ -29,6 +66,86 @@
     new Vue({
         el: '#app',
         data: () => ({
+            upload: false,
+            search: '',
+            headers: [
+                {
+                    text: '開課系級',
+                    align: 'center',
+                    sortable: true,
+                    value: 'OpenDepartment'
+                },
+                {
+                    text: '課程名稱',
+                    sortable: true,
+                    align: 'center',
+                    value: 'CourseName',
+                },
+                {
+                    text: '老師名稱',
+                    sortable: true,
+                    align: 'center',
+                    value: 'TeacherName',
+                },
+                {
+                    text: '學生學號',
+                    sortable: true,
+                    align: 'center',
+                    value: 'StudentID',
+                },
+                {
+                    text: '學生姓名',
+                    sortable: true,
+                    align: 'center',
+                    value: 'StudentName',
+                }
+            ],
+            StudenCoursetList: [
+                {
+                    OpenDepartment: '生科碩一',
+                    CourseName: '細胞分子生物學',
+                    TeacherName: '招名威',
+                    StudentID : 10327247 ,
+                    StudentName: '舒一修'
+
+                },
+                {
+                    OpenDepartment: '生科碩一',
+                    CourseName: '細胞分子生物學',
+                    TeacherName: '楊大毅',
+                    StudentID : 10327248 ,
+                    StudentName: '謝念庭'
+
+                },                {
+                    OpenDepartment: '生科碩一',
+                    CourseName: '細胞分子生物學',
+                    TeacherName: '招名威',
+                    StudentID : 10327249 ,
+                    StudentName: '吳豐州'
+
+                },                {
+                    OpenDepartment: '生科碩一',
+                    CourseName: '量子化學概論與光譜',
+                    TeacherName: '費安東',
+                    StudentID : 10602150 ,
+                    StudentName: '謝念庭'
+
+                },                {
+                    OpenDepartment: '生科碩一',
+                    CourseName: '高等化工流體力學',
+                    TeacherName: '魏大欽',
+                    StudentID : 10327244 ,
+                    StudentName: '梁智鈞'
+
+                },                {
+                    OpenDepartment: '生科碩一',
+                    CourseName: '薄膜高分子工程',
+                    TeacherName: '招名威',
+                    StudentID : 10327257 ,
+                    StudentName: '佳儀庭'
+
+                }
+            ]
         })
     })
 

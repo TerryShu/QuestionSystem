@@ -15,7 +15,79 @@
             <v-toolbar-title>帳號管理</v-toolbar-title>
         </v-toolbar>
         <v-content>
+            <v-toolbar flat color="white">
+                <v-spacer></v-spacer>
+                <v-dialog v-model="dialog" max-width="500px">
+                    <v-btn slot="activator" color="primary" dark class="mb-2">新增帳號</v-btn>
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">{{ formTitle }}</span>
+                        </v-card-title>
 
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-text-field v-if="this.editedIndex === -1"
+                                                      v-model="editedItem.account" label="帳號" >
+                                        </v-text-field>
+                                        <v-text-field v-else
+                                                      v-model="editedItem.account" label="帳號" disabled >
+                                        </v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-text-field v-model="editedItem.name" label="姓名"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-text-field v-model="editedItem.department" label="系所"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-text-field v-model="editedItem.permission" label="權限"></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click.native="close">取消</v-btn>
+                            <v-btn color="blue darken-1" flat @click.native="save">儲存</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-toolbar>
+            <v-data-table
+                    :headers="headers"
+                    :items="accounts"
+                    hide-actions
+                    class="elevation-1"
+            >
+                <template slot="items" slot-scope="props">
+                    <td class="text-xs-center">{{ props.item.account }}</td>
+                    <td class="text-xs-center">{{ props.item.name }}</td>
+                    <td class="text-xs-center">{{ props.item.department }}</td>
+                    <td class="text-xs-center">{{ props.item.permission }}</td>
+                    <td class="justify-center layout px-0">
+                        <v-icon
+                                class="mr-2"
+                                @click="editItem(props.item)"
+                        >
+                            edit
+                        </v-icon>
+                        <v-icon
+                                class="mr-2"
+                                @click="deleteItem(props.item)"
+                        >
+                            delete
+                        </v-icon>
+                    </td>
+                </template>
+                <template slot="no-data">
+                    <v-alert :value="true" color="error" icon="warning">
+                        已無帳號
+                    </v-alert>
+                </template>
+            </v-data-table>
         </v-content>
         <v-footer color="indigo" app inset>
             <span class="white--text">&copy; QuestionSystem</span>
@@ -29,7 +101,134 @@
     new Vue({
         el: '#app',
         data: () => ({
-        })
+            dialog: false,
+            headers: [
+                {
+                    text: '帳號',
+                    align: 'center',
+                    sortable: true,
+                    value: 'account'
+                },
+                {
+                    text: '姓名',
+                    align: 'center',
+                    sortable: true,
+                    value: 'name',
+                },
+                {
+                    text: '系所',
+                    align: 'center',
+                    sortable: true,
+                    value: 'department'
+                },
+                {   text: '權限',
+                    align: 'center',
+                    sortable: true,
+                    value: 'permission'
+                },
+                {
+                    text: '編輯',
+                    value: 'name',
+                    align: 'center',
+                    sortable: false
+                }
+            ],
+            accounts: [],
+            editedIndex: -1,
+            editedItem: {
+                account: '',
+                name: '',
+                department: '',
+                permission: '',
+            },
+            defaultItem: {
+                account: '',
+                name: '',
+                department: '',
+                permission: '',
+            }
+        }),
+
+        computed: {
+            formTitle () {
+                return this.editedIndex === -1 ? '新增帳號' : '編輯帳號'
+            }
+        },
+
+        watch: {
+            dialog (val) {
+                val || this.close()
+            }
+        },
+
+        created () {
+            this.initialize()
+        },
+
+        methods: {
+            initialize () {
+                this.accounts = [
+                    {
+                        account: '10327247',
+                        name: '舒一修',
+                        department: '資訊',
+                        permission: '管理員'
+                    },
+                    {
+                        account: '10327144',
+                        name: '伍家恩',
+                        department: '資訊',
+                        permission: '管理員'
+                    },
+                    {
+                        account: '30355',
+                        name: '羅秀美',
+                        department: '資訊',
+                        permission: '助理'
+                    },
+                    {
+                        account: '72717',
+                        name: '鄭涵榛',
+                        department: '資訊',
+                        permission: '助理'
+                    },
+                    {
+                        account: '12345',
+                        name: '張志傑',
+                        department: '資訊',
+                        permission: '管理員'
+                    },
+                ]
+            },
+
+            editItem (item) {
+                this.editedIndex = this.accounts.indexOf(item)
+                this.editedItem = Object.assign({}, item)
+                this.dialog = true
+            },
+
+            deleteItem (item) {
+                const index = this.accounts.indexOf(item)
+                confirm('確定要刪除此人員?') && this.accounts.splice(index, 1)
+            },
+
+            close () {
+                this.dialog = false
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+
+            save () {
+                if (this.editedIndex > -1) {
+                    Object.assign(this.accounts[this.editedIndex], this.editedItem)
+                } else {
+                    this.accounts.push(this.editedItem)
+                }
+                this.close()
+            }
+        }
     })
 
 </script>
