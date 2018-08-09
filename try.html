@@ -3,96 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style scoped>
-        input[type=file] {
-            position: absolute;
-            left: -99999px;
-        }
-    </style>
+    <style type="text/css"> .css-table{    display: table; } .css-table .thead{    display:table-header-group; } .css-table .tbody{    display:table-row-group; } .css-table .tr{    display:table-row; } .css-table .th, .css-table .td{    display:table-cell; } </style>
 </head>
 <body>
-<template>
-    <div>
-        <v-text-field prepend-icon="attach_file" single-line
-                      v-model="filename" :label="label" :required="required"
-                      @click.native="onFocus"
-                      :disabled="disabled" ref="fileTextField"></v-text-field>
-        <input type="file" :accept="accept" :multiple="false" :disabled="disabled"
-               ref="fileInput" @change="onFileChange">
-    </div>
-</template>
+<div id="css-table" class="css-table">    <div  class="thead">       <div class="tr">          <div class="th">門市編號</div>            <div class="th">門市類型</div>         </div> </div> <div class="tbody">    <div class="tr">       <div class="td">01</div>       <div class="td">品牌形象店</div>    </div>    <div class="tr">       <div class="td">02</div>       <div class="td">品牌形象店</div>      </div> </div>   </div>
 </body>
-<script>
-    export default{
-        props: {
-            value: {
-                type: [Array, String]
-            },
-            accept: {
-                type: String,
-                default: "*"
-            },
-            label: {
-                type: String,
-                default: "Please choose..."
-            },
-            required: {
-                type: Boolean,
-                default: false
-            },
-            disabled: {
-                type: Boolean,
-                default: false
-            },
-            multiple: {
-                type: Boolean, // not yet possible because of data
-                default: false
-            }
-        },
-        data(){
-            return {
-                filename: ""
-            };
-        },
-        watch: {
-            value(v){
-                this.filename = v;
-            }
-        },
-        mounted() {
-            this.filename = this.value;
-        },
 
-        methods: {
-            getFormData(files){
-                const data = new FormData();
-                [...files].forEach(file => {
-                    data.append('data', file, file.name); // currently only one file at a time
-                });
-                return data;
-            },
-            onFocus(){
-                if (!this.disabled) {
-                    debugger;
-                    this.$refs.fileInput.click();
-                }
-            },
-            onFileChange($event){
-                const files = $event.target.files || $event.dataTransfer.files;
-                const form = this.getFormData(files);
-                if (files) {
-                    if (files.length > 0) {
-                        this.filename = [...files].map(file => file.name).join(', ');
-                    } else {
-                        this.filename = null;
-                    }
-                } else {
-                    this.filename = $event.target.value.split('\\').pop();
-                }
-                this.$emit('input', this.filename);
-                this.$emit('formData', form);
-            }
-        }
-    };
-</script>
 </html>
+
+

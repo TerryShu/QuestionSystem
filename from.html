@@ -32,7 +32,10 @@
             <v-container align-center>
                 <table>
                     <tr>
-                        <th v-for="header in headers">{{ header }}</th>
+                        <th v-for="header in headers">
+                            <template v-if="header === '認同度' "><abbr title="即認不認同問此問題或此問題合不合適">認同度</abbr></template>
+                            <template v-else>{{ header }}</template>
+                        </th>
                     </tr>
                     <tr v-for="Question in AllQuestions" >
                         <td width="250px" >{{ Question.question }}</td>

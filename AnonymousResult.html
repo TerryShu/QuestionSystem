@@ -15,7 +15,58 @@
             <v-toolbar-title>觀看匿名資料</v-toolbar-title>
         </v-toolbar>
         <v-content>
-
+            <v-container fluid grid-list-sm>
+                <v-layout row wrap>
+                    <v-flex d-flex xs12 order-xs5>
+                        <v-layout column>
+                            <v-flex d-flex>
+                                <div id="linechart" style="height: 500%"></div>
+                            </v-flex>
+                            <v-flex d-flex>
+                                <v-card color="brown" dark tile flat>
+                                    <v-card-text>{{ lorem }}</v-card-text>
+                                </v-card>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+                    <v-flex d-flex xs12 sm7>
+                        <v-layout row wrap>
+                            <v-flex d-flex>
+                                <v-card color="indigo lighten-2" dark tile flat>
+                                    <v-card-text>{{ lorem.slice(0, 70) }}</v-card-text>
+                                </v-card>
+                            </v-flex>
+                            <v-flex d-flex>
+                                <v-layout row>
+                                    <v-flex
+                                            v-for="n in 2"
+                                            :key="n"
+                                            d-flex
+                                    >
+                                        <v-card
+                                                color="amber lighten-2"
+                                                tile
+                                                flat
+                                        >
+                                            <v-card-text>{{ lorem.slice(0, 40) }}</v-card-text>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+                    <v-flex d-flex xs12 sm2 child-flex>
+                        <v-card color="orange lighten-2" tile flat>
+                            <v-card-text>{{ lorem.slice(0, 90) }}</v-card-text>
+                        </v-card>
+                    </v-flex>
+                    <v-flex d-flex xs12 sm3>
+                        <v-card color="red lighten-2" dark tile flat>
+                            <v-card-text>{{ lorem.slice(0, 100) }}</v-card-text>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
         </v-content>
         <v-footer color="indigo" app inset>
             <span class="white--text">&copy; QuestionSystem</span>
@@ -25,13 +76,39 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.common.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: () => ({
+            lorem: 'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.'
         })
     })
 
+</script>
+
+<script type="text/javascript">
+    var dom = document.getElementById("linechart");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'line'
+        }]
+    };
+    ;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
 </script>
 </body>
 </html>
