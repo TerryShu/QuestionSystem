@@ -23,7 +23,7 @@
                         vertical
                 ></v-divider>
                 <v-spacer></v-spacer>
-                <v-dialog v-model="dialog" max-width="500px">
+                <v-dialog v-model="dialogAddAccount" max-width="500px">
                     <v-btn slot="activator" color="primary" dark class="mb-2">新增帳號</v-btn>
                     <v-card>
                         <v-card-title>
@@ -66,6 +66,59 @@
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" flat @click.native="close">取消</v-btn>
                             <v-btn color="blue darken-1" flat @click.native="save">儲存</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogAddDepartment" max-width="500px">
+                    <v-btn slot="activator" color="success" dark class="mb-2">新增系所</v-btn>
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">新增系所</span>
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-text-field v-model="AddDepartment" label="新增系所" >
+                                        </v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click.native="AddDepartmentClose">取消</v-btn>
+                            <v-btn color="blue darken-1" flat @click.native="AddDepartmentSave( AddDepartment )">儲存</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogDeleteDepartment" max-width="500px">
+                    <v-btn slot="activator" color="error" dark class="mb-2">刪除系所</v-btn>
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">刪除系所</span>
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
+                                    <v-flex xs12 sm6 md4>
+                                        <v-select
+                                                v-model="selectdepartments"
+                                                :items="departments"
+                                                label="系所"
+                                        ></v-select>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click.native="DeleteDepartmentClose">取消</v-btn>
+                            <v-btn color="error" flat @click.native="DeleteDepartmentSave( selectdepartments )">刪除</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -115,7 +168,11 @@
     new Vue({
         el: '#app',
         data: () => ({
-            dialog: false,
+            dialogAddAccount: false,
+            dialogAddDepartment: false,
+            dialogDeleteDepartment: false,
+            selectdepartments : '' ,
+            AddDepartment : '',
             headers: [
                 {
                     text: '帳號',
@@ -220,16 +277,17 @@
             editItem (item) {
                 this.editedIndex = this.accounts.indexOf(item)
                 this.editedItem = Object.assign({}, item)
-                this.dialog = true
+                this.dialogAddAccount = true
             },
 
             deleteItem (item) {
                 const index = this.accounts.indexOf(item)
-                confirm('確定要刪除此人員?') && this.accounts.splice(index, 1)
+                console.log(item)
+                confirm('確定要刪除 ' + item.name + ' 此人員?') && this.accounts.splice(index, 1)
             },
 
             close () {
-                this.dialog = false
+                this.dialogAddAccount = false
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem)
                     this.editedIndex = -1
@@ -243,7 +301,37 @@
                     this.accounts.push(this.editedItem)
                 }
                 this.close()
+            },
+
+            AddDepartmentClose () {
+                this.AddDepartment = ''
+                this.dialogAddDepartment = false
+            },
+
+            AddDepartmentSave (item) {
+                const index = this.departments.indexOf(item)
+                if ( index === -1 ) {
+                    confirm('確定要新增 ' +  item + ' 此系所?') && this.departments.push(item)
+                }
+                else {
+                    confirm('此系所已經存在')
+                }
+                this.AddDepartment = ''
+                this.dialogAddDepartment = false
+            },
+
+            DeleteDepartmentClose () {
+                this.selectdepartments = ''
+                this.dialogDeleteDepartment = false
+            },
+
+            DeleteDepartmentSave (item) {
+                const index = this.departments.indexOf(item)
+                confirm('確定要刪除 ' +  item + ' 此系所?') && this.departments.splice(index, 1)
+                this.selectdepartments = ''
+                this.dialogDeleteDepartment= false
             }
+
         }
     })
 
