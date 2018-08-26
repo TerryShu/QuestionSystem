@@ -6,6 +6,67 @@
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <title>助理控制台</title>
+    <style>
+
+        /* Big Tablet to 1200px (width smaller than 1140px row */
+        @media screen {
+            .plot1{
+                width:50%;
+                height: 50%;
+                // background: red;
+                float: left;
+            }
+            .plot2{
+                width:50%;
+                height: 50%;
+                // background: #ff68ae;
+                float: left;
+            }
+            .plot3{
+                width:50%;
+                height: 50%;
+                // background: #65aaff;
+                float: left;
+            }
+            .plot4{
+                width:50%;
+                height: 50%;
+                // background: #66ff7c;
+                float: left;
+            }
+        }
+
+
+
+        /* Small Phones 0 to 480px(Iphone) */
+        @media screen and (max-width: 480px) {
+            .plot1{
+                width:100%;
+                height: 100%;
+                //background: red;
+                float: left;
+            }
+            .plot2{
+                width:100%;
+                height: 100%;
+                //background: #ff68ae;
+                float: left;
+            }
+            .plot3{
+                width:100%;
+                height: 100%;
+                //background: #65aaff;
+                float: left;
+            }
+            .plot4{
+                width:100%;
+                height: 100%;
+                //background: #66ff7c;
+                float: left;
+            }
+        }
+
+    </style>
 </head>
 <body>
 <div id="app">
@@ -67,9 +128,10 @@
             </v-btn>
         </v-toolbar>
         <v-content>
-            <v-container d-flex >
-
-            </v-container>
+            <div class="plot1" id="plot1"></div>
+            <div class="plot2" id="plot2"></div>
+            <div class="plot3" id="plot3"></div>
+            <div class="plot4" id="plot4"></div>
         </v-content>
         <v-footer color="indigo" app inset>
             <span class="white--text">&copy; QuestionSystem</span>
@@ -85,6 +147,9 @@
         data: () => ({
             drawer: null,
         }),
+        mounted(){
+            this.DrawPlot();
+        },
         methods: {
             LogOut: () => {
                 alert('LogOut!') ;
@@ -104,35 +169,81 @@
             },
             Statistics: () => {
                 window.open('Statistics.html')
-            }
+            },
+            DrawPlot: () => {
 
+                var dom1 = document.getElementById("plot1");
+                var dom2 = document.getElementById("plot2");
+                var dom3 = document.getElementById("plot3");
+                var dom4 = document.getElementById("plot4");
+
+                myChart1 = echarts.init(dom1);
+                option = null;
+                option = {
+                    xAxis: {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: [820, 932, 901, 934, 1290, 1330, 1320],
+                        type: 'line'
+                    }]
+                };
+                if (option && typeof option === "object") {
+                    myChart1.setOption(option, true);
+                }
+
+                myChart2 = echarts.init(dom2);
+                if (option && typeof option === "object") {
+                    myChart2.setOption(option, true);
+                }
+
+                myChart3 = echarts.init(dom3);
+                if (option && typeof option === "object") {
+                    myChart3.setOption(option, true);
+                }
+
+                myChart4 = echarts.init(dom4);
+                if (option && typeof option === "object") {
+                    myChart4.setOption(option, true);
+                }
+            }
 
         }
     })
 
 </script>
 <script>
-    var dom = document.getElementById("linechart");
-    var myChart = echarts.init(dom);
-    var app = {};
-    option = null;
-    option = {
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line'
-        }]
+    var dom1 = document.getElementById("plot1");
+    var dom2 = document.getElementById("plot2");
+    var dom3 = document.getElementById("plot3");
+    var dom4 = document.getElementById("plot4");
+
+    var resizeContainer = function () {
+        dom1.style.width = window.getComputedStyle(plot1).getPropertyValue('width');
+        dom1.style.height = window.getComputedStyle(plot1).getPropertyValue('height');
+        dom2.style.width = window.getComputedStyle(plot2).getPropertyValue('width');
+        dom2.style.height = window.getComputedStyle(plot2).getPropertyValue('height');
+        dom3.style.width = window.getComputedStyle(plot3).getPropertyValue('width');
+        dom3.style.height = window.getComputedStyle(plot3).getPropertyValue('height');
+        dom4.style.width = window.getComputedStyle(plot4).getPropertyValue('width');
+        dom4.style.height = window.getComputedStyle(plot4).getPropertyValue('height');
     };
-    ;
-    if (option && typeof option === "object") {
-        myChart.setOption(option, true);
-    }
+
+
+
+    window.onresize = function () {
+        //重置容器高宽
+        resizeContainer();
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+        myChart4.resize();
+    };
+
 </script>
 </body>
 </html>
